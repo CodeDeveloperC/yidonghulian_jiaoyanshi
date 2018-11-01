@@ -18,6 +18,7 @@ import io.reactivex.disposables.Disposable;
 public  class ProgressDialogSubscriber<T> implements Observer<T> {
     private Context mContext;
     private ProgressDialog mDialog;
+    private Disposable mDisposable;
     public ProgressDialogSubscriber(Context context) {
         this.mContext = context;
     }
@@ -53,13 +54,13 @@ public  class ProgressDialogSubscriber<T> implements Observer<T> {
                 @Override
                 public void onCancel(DialogInterface dialogInterface) {
                     //取消订阅，取消请求
-//                    ProgressDialogSubscriber.this
-                    Exception exception = new Exception("您已经取消了");
-                    try {
-                        throw exception;
-                    } catch (Exception e) {
-
-                    }
+                    mDisposable.dispose();
+//                    Exception exception = new Exception("您已经取消了");
+//                    try {
+//                        throw exception;
+//                    } catch (Exception e) {
+//
+//                    }
                 }
             });
         }
@@ -77,6 +78,7 @@ public  class ProgressDialogSubscriber<T> implements Observer<T> {
 
     @Override
     public void onSubscribe(Disposable d) {
+        mDisposable = d;
         showProgressDialog();
     }
 

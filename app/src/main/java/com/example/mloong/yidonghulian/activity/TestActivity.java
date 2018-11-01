@@ -1,5 +1,6 @@
 package com.example.mloong.yidonghulian.activity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import com.example.mloong.yidonghulian.gen.CategoryDao;
 import com.example.mloong.yidonghulian.http.ProgressDialogSubscriber;
 import com.example.mloong.yidonghulian.presenter.MemberPresenter;
 import com.example.mloong.yidonghulian.utils.OkHttpUtils;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.net.MalformedURLException;
 import java.util.List;
@@ -26,6 +28,8 @@ public class TestActivity extends AppCompatActivity {
 
     @BindView(R.id.txt)
     TextView txt;
+    @BindView(R.id.simpleDraweeView)
+    SimpleDraweeView mSimpleDraweeView;
 
     private CategoryDao mCategoryDao;
     private Category mCategory;
@@ -55,7 +59,11 @@ public class TestActivity extends AppCompatActivity {
 //        testRetrofit();
 //        testRetrofit2();
 //        testRetrofit3();
-        testRetrofit4();
+//        testRetrofit4();
+
+        //testFresco
+        testFresco();
+
 
         //txt.setText("ni");
     }
@@ -97,6 +105,12 @@ public class TestActivity extends AppCompatActivity {
 //
 //    }
 
+    public void testFresco() {
+        mSimpleDraweeView.setImageURI(Uri.parse("https://img.alicdn.com/tfs/TB1bnXuk7voK1RjSZFDXXXY3pXa-520-280.jpg_q90_.webp"));
+
+
+    }
+
     public void testRetrofit3() {
         MemberPresenter.register(new Observer<MemberEntity>() {
             @Override
@@ -125,26 +139,13 @@ public class TestActivity extends AppCompatActivity {
 
     public void testRetrofit4() {
         MemberPresenter.register(new ProgressDialogSubscriber<MemberEntity>(this) {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
 
             @Override
             public void onNext(MemberEntity memberEntity) {
                 txt.setText(memberEntity.toString());
             }
 
-            @Override
-            public void onError(Throwable e) {
-                txt.setText(e.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-                Toast.makeText(TestActivity.this, "success", Toast.LENGTH_SHORT).show();
-            }
-        }, "zhangshan", "password", "2060344029@qq.com");
+        }, "zhangshan12", "password", "2060344029@qq.com");
 
 
     }

@@ -22,6 +22,10 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.main_frame, mNavigationFragment).commit();
 
+
+    }
+
+    private void testOkhttp() {
         try {
             OkHttpUtils.okHttp(this);
         } catch (MalformedURLException e) {
