@@ -1,6 +1,9 @@
 package com.example.mloong.yidonghulian.fragment;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,7 +22,11 @@ import android.widget.Toast;
 
 import com.example.mloong.yidonghulian.MainActivity;
 import com.example.mloong.yidonghulian.R;
+import com.example.mloong.yidonghulian.activity.AddressActivity;
+import com.example.mloong.yidonghulian.activity.ChangePWDActivity;
 import com.example.mloong.yidonghulian.activity.LoginActivity;
+import com.example.mloong.yidonghulian.activity.MyFavoriteActivity;
+import com.example.mloong.yidonghulian.activity.MyOrderActivity;
 import com.example.mloong.yidonghulian.common.ImageLoaderManager;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -113,6 +120,7 @@ public class PersonFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_person, container, false);
         unbinder = ButterKnife.bind(this, view);
+        mainActivity = (MainActivity) this.getActivity();
         init();
         return view;
     }
@@ -173,19 +181,93 @@ public class PersonFragment extends Fragment {
                 startActivity(new Intent(mainActivity, LoginActivity.class));
                 break;
             case R.id.my_collect:
+                if (mainActivity.isLogin()) {
+                    startActivity(new Intent(mainActivity, MyFavoriteActivity.class));
+                    return;
+                }
+                startActivityForResult(new Intent(mainActivity, LoginActivity.class), MY_FAVORITE);
                 break;
             case R.id.my_address:
+                if (mainActivity.isLogin()) {
+                    Intent intent = new Intent(mainActivity, AddressActivity.class);
+                    intent.putExtra("type", 1);
+                    startActivity(intent);
+                    return;
+                }
+                startActivityForResult(new Intent(mainActivity, LoginActivity.class), MY_ADDRESS);
                 break;
             case R.id.my_account:
+                if (mainActivity.isLogin()) {
+                    startActivityForResult(new Intent(mainActivity, ChangePWDActivity.class), MY_ACCOUNT_AFTER);
+                    return;
+                }
+                startActivityForResult(new Intent(mainActivity, LoginActivity.class), MY_ACCOUNT_BEFORE);
                 break;
             case R.id.person_logout_layout:
+                new AlertDialog.Builder(mainActivity)
+                        .setTitle("退出登录")
+                        .setMessage("您确认要退出登录吗？")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                logout();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
                 break;
             case R.id.person_my_order:
                 if (mainActivity.isLogin()) {
-                    
+                    startActivity(new Intent(mainActivity, MyOrderActivity.class));
+                    return;
+                }
+                startActivityForResult(new Intent(mainActivity, LoginActivity.class), MY_ORDER);
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case MY_ORDER:
+                if (resultCode == Activity.RESULT_OK && data.getBooleanExtra("logined", false)) {
+                    Intent intent = new Intent(mainActivity, MyOrderActivity.class);
+                    startActivity(intent);
+                }
+
+                break;
+            case MY_FAVORITE:
+                if (resultCode == Activity.RESULT_OK && data.getBooleanExtra("logined", false)) {
+                    Intent intent = new Intent(mainActivity, MyFavoriteActivity.class);
+                    startActivity(intent);
+                }
+
+                break;
+            case MY_ADDRESS:
+                if (resultCode == Activity.RESULT_OK && data.getBooleanExtra("logined", false)) {
+                    Intent intent = new Intent(mainActivity, AddressActivity.class);
+                    intent.putExtra("type", 1);
+                    startActivity(intent);
+                }
+
+                break;
+            case MY_ACCOUNT_BEFORE://未登录时修改密码，修改密码后进行登录
+                if (resultCode == Activity.RESULT_OK && data.getBooleanExtra("logined", false)) {
+                    Intent intent = new Intent(mainActivity, ChangePWDActivity.class);
+                    startActivityForResult(intent, MY_ACCOUNT_AFTER);
+                }
+                break;
+            case MY_ACCOUNT_AFTER://登录时修改密码，修改完毕后进行登录
+                if (resultCode == Activity.RESULT_OK) {
+                    startActivity(new Intent(mainActivity, LoginActivity.class));
                 }
                 break;
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 }

@@ -18,14 +18,13 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
-public class HttpMethods {
-    protected static String TAG = "HttpMethods";
-    private static HttpMethods sHttpMethods;
+public class HttpMethods2 {
+    protected static String TAG = "HttpMethods2";
+    private static HttpMethods2 sHttpMethods;
     private Retrofit mRetrofit;
     protected static MemberService sMemberService;
 
-    public HttpMethods() {
+    public HttpMethods2() {
         if (sHttpMethods == null) {
             OkHttpClient okHttpClient =
                     new OkHttpClient.Builder().connectTimeout(Share.DEFAULT_TIMEOUT, TimeUnit.SECONDS).build();
@@ -39,11 +38,11 @@ public class HttpMethods {
         }
     }
 
-    public static HttpMethods getInstance() {
+    public static HttpMethods2 getInstance() {
         if (sHttpMethods == null) {
-            synchronized (HttpMethods.class) {
+            synchronized (HttpMethods2.class) {
                 if (sHttpMethods == null) {
-                    sHttpMethods = new HttpMethods();
+                    sHttpMethods = new HttpMethods2();
                 }
             }
         }
@@ -55,7 +54,7 @@ public class HttpMethods {
      * 对结果进行解析
      * @param <T>
      */
-    public static class HttpResultFunc<T> implements Function<HttpResult<T>, T> {
+    public static abstract class HttpResultFunc<T> implements Function<HttpResult<T>, T> {
 
         @Override
         public T apply(HttpResult<T> tHttpResult) throws Exception {
@@ -79,19 +78,6 @@ public class HttpMethods {
         }
     }
 
-//    public static <T> void toSubscribe(Observable<T> observable, Subscriber<T> subscriber) {
-//        observable.subscribeOn(Schedulers.io())
-//                .unsubscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe((Observer<? super T>) subscriber);
-//    }
-//
-//    public static <T> void toSubscribe(Observable<T> observable, Consumer<T> subscriber) {
-//        observable.subscribeOn(Schedulers.io())
-//                .unsubscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(subscriber);
-//    }
 
     public static <T> void toSubscribe(Observable<T> observable, Observer<T> subscriber) {
         observable.subscribeOn(Schedulers.io())

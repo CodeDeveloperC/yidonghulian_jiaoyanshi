@@ -28,7 +28,8 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public boolean isLogin() {
         SharedPreferences sharedPreferences = getSharedPreferences("user", 0);
-        return !TextUtils.isEmpty(sharedPreferences.getString("username", ""));
+//        String username = sharedPreferences.getString("uname", "");
+        return !TextUtils.isEmpty(sharedPreferences.getString("uname", ""));
     }
 
 //    /**

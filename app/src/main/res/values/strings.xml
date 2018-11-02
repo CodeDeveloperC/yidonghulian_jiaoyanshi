@@ -25,4 +25,5 @@
     <string name="favorite">收藏</string>
     <string name="add_to_cart">加入购物车</string>
     <string name="favo_no_data">您还没有收藏过任何商品！何不去逛逛~</string>
+    <string name="please_enter_old_password">请输入旧密码</string>
 </resources>
