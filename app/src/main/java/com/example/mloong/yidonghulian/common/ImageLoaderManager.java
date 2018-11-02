@@ -1,11 +1,17 @@
 package com.example.mloong.yidonghulian.common;
 
 import android.content.Context;
+import android.graphics.drawable.Animatable;
+import android.net.Uri;
 
 import com.example.mloong.yidonghulian.MyApplication;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.common.internal.Supplier;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.controller.ControllerListener;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.cache.MemoryCacheParams;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.decoder.ProgressiveJpegConfig;
@@ -29,7 +35,7 @@ public class ImageLoaderManager {
 
     public ImageLoaderManager() {
         if (mInstance == null) {
-            Fresco.initialize(MyApplication.getContext(),getImagePipelineConfig(MyApplication.getContext()));
+            Fresco.initialize(MyApplication.getContext(), getImagePipelineConfig(MyApplication.getContext()));
         }
     }
 
@@ -82,5 +88,56 @@ public class ImageLoaderManager {
         imagePipelineConfigBuilder.setDownsampleEnabled(true);
 
         return imagePipelineConfigBuilder.build();
+    }
+
+    public static void initPicture(String uri, SimpleDraweeView adImage) {
+        //写一个监听器 监听图片加载
+        ControllerListener listener = new BaseControllerListener() {
+
+            /**
+             * 当图片加载成功时会执行的方法
+             * @param id
+             * @param imageInfo
+             * @param animatable
+             */
+            @Override
+            public void onFinalImageSet(String id, Object imageInfo, Animatable animatable) {
+                super.onFinalImageSet(id, imageInfo, animatable);
+            }
+
+
+            /**
+             * 图片加载失败时调用的方法
+             * @param id
+             * @param throwable
+             */
+            @Override
+            public void onFailure(String id, Throwable throwable) {
+                super.onFailure(id, throwable);
+            }
+
+
+            /**
+             *  如果图片使用渐进式，这个方法将会被回调
+             * @param id
+             * @param throwable
+             */
+            @Override
+            public void onIntermediateImageFailed(String id, Throwable throwable) {
+                super.onIntermediateImageFailed(id, throwable);
+            }
+        };
+
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setUri(uri)
+                .setAutoPlayAnimations(true)
+                .setControllerListener(listener)
+                .build();
+
+        adImage.setController(controller);
+    }
+
+    public static void displayImage(String uri, SimpleDraweeView mSimpleDraweeView) {
+        mSimpleDraweeView.setImageURI(Uri.parse(uri));
     }
 }

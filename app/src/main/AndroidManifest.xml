@@ -24,13 +24,10 @@
         <activity
             android:name=".activity.SplashActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity android:name=".activity.AdActivity">
-
-        </activity>
-        <activity android:name=".activity.Ad2Activity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.AdActivity" />
+        <activity
+            android:name=".activity.Ad2Activity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,6 +35,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.MyOrderActivity" />
+        <activity android:name=".activity.MyFavoriteActivity" />
+        <activity android:name=".activity.AddressActivity" />
+        <activity android:name=".activity.ChangePWDActivity"></activity>
     </application>
 
 </manifest>
