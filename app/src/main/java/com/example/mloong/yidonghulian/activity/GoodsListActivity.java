@@ -48,8 +48,6 @@ public class GoodsListActivity extends BaseActivity {
     RelativeLayout searchLayout;
     @BindView(R.id.product_list_search_layout)
     RelativeLayout productListSearchLayout;
-    @BindView(R.id.product_list_top_layout)
-    RelativeLayout productListTopLayout;
     @BindView(R.id.goodslist_orderby_sales_text)
     TextView goodslistOrderbySalesText;
     @BindView(R.id.goodslist_orderby_sales)
@@ -123,12 +121,14 @@ public class GoodsListActivity extends BaseActivity {
                 //下拉刷新
                 if (NetworkUtils.isNetworkAvailable(GoodsListActivity.this)) {//有网络才允许重新刷新
                     loadData();
+                    goodslistSwipeRefresh.setRefreshing(false);
                 } else {
                     goodslistSwipeRefresh.setRefreshing(false);//无网络
                     Toast.makeText(GoodsListActivity.this, "网络不可用", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
 
         //初始化数据
         loadData();

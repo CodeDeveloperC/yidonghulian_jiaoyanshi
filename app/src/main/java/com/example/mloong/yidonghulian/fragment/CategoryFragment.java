@@ -163,7 +163,7 @@ public class CategoryFragment extends Fragment {
                         .show();*/
                 //跳转到商品列表界面
                 Intent intent = new Intent(getActivity(), GoodsListActivity.class);
-                intent.putExtra("cat_id", entity.getCatId());
+                intent.putExtra("catId", entity.getCatId());
                 startActivity(intent);
             }
         });
