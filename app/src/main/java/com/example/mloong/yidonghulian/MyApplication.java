@@ -6,6 +6,7 @@ import android.content.Context;
 import com.example.mloong.yidonghulian.common.ImageLoaderManager;
 import com.example.mloong.yidonghulian.db.GreenDaoManager;
 import com.example.mloong.yidonghulian.http.HttpMethods;
+import com.example.mloong.yidonghulian.http.HttpMethods2;
 
 public class MyApplication extends Application {
     private static Context mContext;
@@ -22,6 +23,7 @@ public class MyApplication extends Application {
 
         //全局配置Retrofit
         HttpMethods.getInstance();
+        HttpMethods2.getInstance();
     }
 
     public static Context getContext() {

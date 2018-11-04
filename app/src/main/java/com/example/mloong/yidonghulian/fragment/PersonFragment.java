@@ -126,7 +126,7 @@ public class PersonFragment extends Fragment {
     }
 
     //初始化布局，根据登陆状态显示不同的布局效果
-    private void init() {
+    public void init() {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user", 0);
         String username = sharedPreferences.getString("uname", "");
         if (TextUtils.isEmpty(username)) {   //未登录

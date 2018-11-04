@@ -14,9 +14,11 @@ import android.widget.Toast;
 
 import com.example.mloong.yidonghulian.R;
 import com.example.mloong.yidonghulian.common.Share;
+import com.example.mloong.yidonghulian.entity.HttpResult;
 import com.example.mloong.yidonghulian.entity.MemberEntity;
 import com.example.mloong.yidonghulian.http.ProgressDialogSubscriber;
 import com.example.mloong.yidonghulian.presenter.MemberPresenter;
+import com.example.mloong.yidonghulian.presenter.MemberPresenter2;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,6 +92,7 @@ public class ChangePWDActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.change_button:
+//                Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show();
                 changePassword();
                 break;
         }
@@ -102,19 +105,19 @@ public class ChangePWDActivity extends BaseActivity {
         String new_rePassword = passwordInputRepass.getText().toString().trim();
 
         checkPassword(old_password, new_password, new_rePassword);
-//        if (flag != 0) {
-//            return;
-//        }
-//
-//        String member_id = getSharedPreferences("user", 0).getString("member_id", "");
-//        if (TextUtils.isEmpty(member_id)) {
-//            Toast.makeText(this, "取出本地用户id失败，请重新登录！", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+        if (flag != 0) {
+            return;
+        }
 
-        email = "20603441@qq.com";
-        old_password = "1234";
-        new_password = "1234";
+        Integer member_id = getSharedPreferences("user", 0).getInt("member_id", 0);
+        if (TextUtils.isEmpty(member_id.toString())) {
+            Toast.makeText(this, "取出本地用户id失败，请重新登录！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+//        email = "20603441@qq.com";
+//        old_password = "1234";
+//        new_password = "1234";
         change(email, old_password, new_password);
 
         //修改密码
@@ -151,14 +154,33 @@ public class ChangePWDActivity extends BaseActivity {
                 memberEntity.setPassword(new_password);
 
 
+                changePassword2(memberEntity);
 
                 finish();
             }
         }, email, password);
     }
 
-
     private void changePassword2(MemberEntity memberEntity) {
+        MemberPresenter2.updateById2(new ProgressDialogSubscriber<HttpResult<MemberEntity>>(ChangePWDActivity.this) {
+            @Override
+            public void onNext(HttpResult<MemberEntity> httpResult) {
+                if (httpResult.getStatus().equals(Share.SUCCESS)) {
+                    Toast.makeText(ChangePWDActivity.this, "修改密码成功,请您重新登录！", Toast.LENGTH_SHORT).show();
+                    Share.logout(ChangePWDActivity.this);
+                    //返回到PersonFragment页面重新登录
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("changepass", true);
+                    setResult(RESULT_OK, returnIntent);
+                    finish();
+                }
+
+            }
+        }, memberEntity);
+    }
+
+
+    private void changePassword(MemberEntity memberEntity) {
         MemberPresenter.updateById(new ProgressDialogSubscriber<MemberEntity>(ChangePWDActivity.this) {
             @Override
             public void onNext(MemberEntity memberEntity) {

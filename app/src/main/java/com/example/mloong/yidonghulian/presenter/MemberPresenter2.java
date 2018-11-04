@@ -22,14 +22,9 @@ public class MemberPresenter2 extends HttpMethods2 {
 
 
 
-    public static void updateById2(Observer<MemberEntity> subscriber, MemberEntity memberEntity) {
-        Observable<MemberEntity> observable = sMemberService.updateById(memberEntity)
-                .map(new HttpResultFunc<MemberEntity>(){
-                    @Override
-                    public MemberEntity apply(HttpResult<MemberEntity> memberEntityHttpResult) throws Exception {
-                        return super.apply(memberEntityHttpResult);
-                    }
-                });
+    public static void updateById2(Observer<HttpResult<MemberEntity>> subscriber, MemberEntity memberEntity) {
+        Observable<HttpResult<MemberEntity>> observable = sMemberService.updateById(memberEntity)
+                .map(new HttpResultFunc<>());
         toSubscribe(observable, subscriber);
     }
 

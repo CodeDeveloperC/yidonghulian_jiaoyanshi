@@ -43,4 +43,9 @@ public class Share {
         localEditor.apply();
     }
 
+    /**
+     * 列表页面右侧列表的列数
+     */
+    public static int SPAN_COUNT = 3;
+
 }
