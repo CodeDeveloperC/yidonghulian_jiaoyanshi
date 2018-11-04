@@ -172,7 +172,7 @@ public class GoodsListActivity extends BaseActivity {
      * 加载数据
      */
     private void loadData() {
-        if (catId == 0) {//从二级分类页面过来
+        if (catId == 0 && TextUtils.isEmpty(keyword)) {//从二级分类页面过来,并且不是搜索数据
             Toast.makeText(GoodsListActivity.this, "没有该列表的商品数据！", Toast.LENGTH_SHORT).show();
             return;
         }
