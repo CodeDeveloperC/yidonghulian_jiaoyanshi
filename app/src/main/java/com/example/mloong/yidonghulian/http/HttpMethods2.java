@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.mloong.yidonghulian.common.Share;
 import com.example.mloong.yidonghulian.entity.HttpResult;
 import com.example.mloong.yidonghulian.server.CategoryService;
+import com.example.mloong.yidonghulian.server.GoodsService;
 import com.example.mloong.yidonghulian.server.MemberService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -33,6 +34,7 @@ public class HttpMethods2 {
     private Retrofit mRetrofit;
     protected static MemberService sMemberService;
     protected static CategoryService sCategoryService;
+    protected static GoodsService sGoodsService;
 
     public HttpMethods2() {
         if (sHttpMethods == null) {
@@ -58,6 +60,7 @@ public class HttpMethods2 {
 
             //初始化
             sCategoryService = mRetrofit.create(CategoryService.class);
+            sGoodsService = mRetrofit.create(GoodsService.class);
         }
     }
 
